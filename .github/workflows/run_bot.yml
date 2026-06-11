@@ -1,29 +1,31 @@
-name: Chay Bot Quet Chung Khoan
+name: VN-Index Auto Telegram Bot
 
 on:
   schedule:
-    # Chạy vào lúc 08:30 giờ quốc tế UTC (tức là đúng 15:30 chiều giờ Việt Nam) từ thứ 2 đến thứ 6
-    - cron: '30 8 * * 1-5'
-  workflow_dispatch: # Tạo nút bấm để bạn có thể tự kích hoạt chạy bằng tay bất kỳ lúc nào
+    # Chạy tự động vào lúc 09:30 UTC (tức 16:30 chiều giờ Việt Nam từ Thứ 2 đến Thứ 6)
+    - cron: '30 9 * * 1-5'
+  workflow_dispatch: # Cho phép bạn bấm nút chạy thủ công bất kỳ lúc nào để test
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Kiem tra code
+    - name: Checkout mã nguồn từ Repo
       uses: actions/checkout@v3
 
-    - name: Cai dat Python
+    - name: Thiết lập môi trường Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
-    - name: Cai dat thu vien can thiet
+    - name: Cài đặt các thư viện cần thiết
       run: |
-        pip install yfinance pandas requests
+        python -m pip install --upgrade pip
+        pip install requests pandas
 
-    - name: Chay file bot quet tin hieu
+    - name: Chạy mã Python gửi tin nhắn
       env:
-        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_TOKEN: ${{ secrets::TELEGRAM_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets::TELEGRAM_CHAT_ID }}
       run: python bot.py
