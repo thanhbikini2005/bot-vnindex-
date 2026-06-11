@@ -1,0 +1,29 @@
+name: Chay Bot Quet Chung Khoan
+
+on:
+  schedule:
+    # Chạy vào lúc 08:30 giờ quốc tế UTC (tức là đúng 15:30 chiều giờ Việt Nam) từ thứ 2 đến thứ 6
+    - cron: '30 8 * * 1-5'
+  workflow_dispatch: # Tạo nút bấm để bạn có thể tự kích hoạt chạy bằng tay bất kỳ lúc nào
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Kiem tra code
+      uses: actions/checkout@v3
+
+    - name: Cai dat Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Cai dat thu vien can thiet
+      run: |
+        pip install yfinance pandas requests
+
+    - name: Chay file bot quet tin hieu
+      env:
+        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: python bot.py
