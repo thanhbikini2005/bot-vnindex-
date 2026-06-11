@@ -22,7 +22,7 @@ jobs:
     - name: Cài đặt các thư viện cần thiết
       run: |
         python -m pip install --upgrade pip
-        pip install requests pandas
+        pip install requests pandas beautifulsoup4 lxml
 
     - name: Chạy mã Python gửi tin nhắn
       env:
